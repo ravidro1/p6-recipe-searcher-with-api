@@ -1,0 +1,27 @@
+.main{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; 
+}
+
+
+.all{
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    /* justify-content: space-around; */
+    margin: 2vw;
+    width: 20vw;
+    font-size: 0.7vw;
+    border-radius: 2vw;
+    border: 0.2vw solid black;
+
+    height: auto;
+
+    background-color: cornsilk;
+    text-align: center;
+}
+
+.all img{
+    width: 100%;
+    height: auto;
+}
