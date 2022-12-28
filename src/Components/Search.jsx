@@ -1,26 +1,20 @@
 import React, { useState } from 'react';
 
-function Search(props) {
+function Search({ setData }) {
 
 
-    const [tempName, setTempName] = useState("");
-    const [tempType, setTempType] = useState("");
-    const [tempDiet, setTempDiet] = useState("");
-    const [tempCal, setTempCal] = useState("");
-    const [tempCuisineType, setTempCuisineType] = useState("");
-
-    // const [tempTimeToMake, setTempTimeToMake] = useState("");
-
-    // const [tempType, setTempType] = useState();
+    const [temp, setTemp] = useState({name: "", type: "", diet: "", cuisineType: ""});
 
     function submit(){
-        props.setName(tempName);
-        props.setCal(tempCal);
-        props.setDiet(tempDiet);
-        props.setType(tempType);
-        props.setCuisineType(tempCuisineType);
+
+
+        const newData = {};
+        newData.name = temp.name;
+        newData.type = temp.type;
+        newData.diet = temp.diet;
+        newData.cuisineType = temp.cuisineType;
         
-        // props.setTimeToMake(tempTimeToMake);
+        setData(newData);
     }
 
     return (
@@ -28,11 +22,9 @@ function Search(props) {
             <form onSubmit={(e) => e.preventDefault()}>
 
                 
-            <input placeholder='Name' onChange={(e) => setTempName(e.target.value)}/>
-            <input type='number' placeholder='Max Cal' onChange={(e) => setTempCal(e.target.value)}/>
-            {/* <input placeholder='Max Time To Make' onChange={(e) => setTempTimeToMake(e.target.value)}/> */}
+            <input placeholder='Name' onChange={(e) => setTemp({...temp ,name: e.target.value})}/>
 
-            <select name="CuisineType" id="" onChange={(e) => setTempCuisineType(e.target.value)}>
+            <select name="CuisineType" id="" onChange={(e) => setTemp({...temp ,cuisineType: e.target.value})}>
                 <option value=""> select CuisineType </option>
                 <option value="Indian"> Indian </option>
                 <option value="French"> French </option>
@@ -42,14 +34,14 @@ function Search(props) {
                 <option value="Italian"> Italian </option>
             </select>
 
-            <select name="type" id="" onChange={(e) => setTempType(e.target.value)}>
+            <select name="type" id="" onChange={(e) => setTemp({...temp ,type: e.target.value})}>
                 <option value=""> select type </option>
                 <option value="lunch"> lunch </option>
                 <option value="dinner"> dinner </option>
                 <option value="breakfast"> breakfast </option>
                 <option value="snack"> snack </option>
             </select>
-            <select name="diet" id="" onChange={(e) => setTempDiet(e.target.value)}>
+            <select name="diet" id="" onChange={(e) => setTemp({...temp ,diet: e.target.value})}>
                 <option value=""> select diet </option>
                 <option value="balanced"> balanced </option>
                 <option value="high-protein"> high-protein </option>

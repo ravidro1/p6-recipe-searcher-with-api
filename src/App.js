@@ -1,40 +1,34 @@
 import './App.css';
-import { useState } from 'react';
-import Search from './Search';
-import Fetch from './Fetch';
-import AllRecipe from './AllRecipe';
+import { useEffect, useState } from 'react';
+import HomePage from './Pages/HomePage';
+import Favorites from './Pages/Favorites';
+import { Route, Routes } from 'react-router-dom';
+import DefualtPage from './Pages/DefualtPage';
+
+
+const LOCAL_STORAGE = "l";
 
 function App() {
+  const [favorite, setFavorite] = useState([]);
 
-  const [name, setName] = useState();
-  const [type, setType] = useState();
-  const [cal, setCal] = useState();
-  const [diet, setDiet] = useState();
-  const [cuisineType, setCuisineType] = useState();
+  useEffect(() => {
+      const temp = JSON.parse(localStorage.getItem(LOCAL_STORAGE));
+      if(temp) setFavorite(temp);
+  }, []);
 
-  const [recipeFound, setRecipeFound] = useState();
-  
-  const [recipe, setRecipe] = useState();
-
-
-  // const [timeToMake, setTimeToMake] = useState();
-
-
-
-
+  useEffect(() => {
+      if(favorite) localStorage.setItem(LOCAL_STORAGE, JSON.stringify(favorite));
+  }, [favorite]);
 
 
   return (
     <div className="App">
-      <Search setName={setName} setType={setType} setCal={setCal} setDiet={setDiet} setCuisineType={setCuisineType}/>
-      {/* <p> {name} </p>
-      <p> {type} </p>
-      <p> {cal} </p>
-      <p> {diet} </p> */}
 
-      {(name || type || cal || diet || cuisineType)  && <Fetch name={name} cuisineType={cuisineType} type={type} cal={cal} diet={diet} setRecipe={setRecipe}/>}
-      {/* {<Fetch name={name} type={type} cal={cal} diet={diet} setRecipe={setRecipe}/>} */}
-      {recipe && <AllRecipe recipe={recipe}/>}
+      <Routes>
+        <Route path='/' element={<HomePage favorite={favorite} setFavorite={setFavorite}></HomePage>}></Route>
+        <Route path='/favorites' element={<Favorites  favorite={favorite} setFavorite={setFavorite}></Favorites>}></Route>
+        <Route path='*' element={<DefualtPage></DefualtPage>}> </Route>
+      </Routes>
 
     </div>
   );
