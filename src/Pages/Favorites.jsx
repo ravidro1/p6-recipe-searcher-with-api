@@ -1,3 +1,4 @@
+import {Button} from "@mui/material";
 import React, {useState} from "react";
 import {NavLink, useLocation} from "react-router-dom";
 import AllRecipe from "../Components/AllRecipe";
@@ -8,41 +9,44 @@ function Favorites({favorite, setFavorite}) {
   //   const loc = useLocation();
   // const [favorites, setFavorites] = useState([]);
 
-  function reset(){
-    setFavorite([])
+  function reset() {
+    setFavorite([]);
   }
+
+  // const ani = animation: myAnim 2s ease 0s 1 normal forwards;
 
   return (
     <div>
-      <h1> Favorites </h1>
-      {favorite && <h1> Number Of Item: {favorite.length} </h1>}
+      <div className="favorite-page-header-favorite-count-clear-button">
+        <NavLink style={{textDecoration: "none"}} to={"/"}>
+          <Button className="showFavoriteCount" variant="contained">
+            {" "}
+            Go To Home: Number Of Item: {favorite.length}{" "}
+          </Button>{" "}
+        </NavLink>
 
-      <NavLink to={"/"}>
-        {/* <NavLink to={"/favorites"} state={{favoriteData: favorite}}> */}{" "}
-        <button> To HomePage </button>{" "}
-      </NavLink>
+        {/* {favorite && <h1> Number Of Item: {favorite.length} </h1>} */}
+        <Button
+          className="favorite-page-clear-button"
+          variant="contained"
+          onClick={reset}
+        >
+          {" "}
+          Clear List{" "}
+        </Button>
+      </div>
 
-      <button onClick={reset}> Clear List </button>
-      {/* {console.log(favorite)} */}
-      {/* {console.log(loc.state.favoriteData)} */}
-      {/* {loc.state && loc.state} */}
-      {/* {favorites && favorites} */}
+      <h1 className="favorite-page-head-line"> Favorites </h1>
 
-      <div className="main">
+      
         <AllRecipe
           recipe={favorite}
           setFavorite={setFavorite}
           InFavorite={true}
         />
+      
 
-        {/* {favorite.map((item, i) => (
-          <OneRecipe
-            key={i}
-            InFavorite={true}
-            oneRecipe={item}
-          />
-        ))} */}
-      </div>
+        {!favorite.length && <p id="empty-notification"> The Favorite List Is Empty </p>}
     </div>
   );
 }

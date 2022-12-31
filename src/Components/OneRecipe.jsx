@@ -1,41 +1,84 @@
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+} from "@mui/material";
 import React from "react";
+import {NavLink} from "react-router-dom";
 import "./oneRecipe.css";
 
-function OneRecipe({ addToFavorites, removeFromFavorites, InFavorite, oneRecipe, index}) {
-  //destructering
-  let isInFavorite = InFavorite;
+function OneRecipe({
+  addToFavorites,
+  removeFromFavorites,
+  InFavorite,
+  oneRecipe,
+  index,
+}) {
+
+  const isInFavorite = InFavorite;
   const id = index;
   const recipesData = oneRecipe.recipe;
   const image = recipesData.image;
-  const calories = recipesData.calories < 3 ? recipesData.calories : Math.round(recipesData.calories);
+  const calories =
+    recipesData.calories < 3
+      ? recipesData.calories
+      : Math.round(recipesData.calories);
   const label = recipesData.label;
   const cuisineType = recipesData.cuisineType;
-  const ingredients = recipesData.ingredients.map((item, i) => (
-    <li key={i}> {item.text} </li>
-  ));
+  
+
+  const card = (
+      <div className="card">
+
+        <div className="front-side-of-card card-faces">
+        <Typography id="head-line-of-card" gutterBottom>
+          <strong id="head-line-of-card"> {label} </strong>
+        </Typography>
+        <hr />
+        <img id="image" src={image} alt="pic" />
+        </div>
+
+        <div className="back-side-of-card card-faces">
+          {!isInFavorite ? (
+            <Button
+              className="favorite-buttons"
+              onClick={() => addToFavorites(oneRecipe)}
+            >
+              {" "}
+              Add To Favorites{" "}
+            </Button>
+          ) : (
+            <Button
+              className="favorite-buttons"
+              onClick={() => removeFromFavorites(oneRecipe)}
+            >
+              {" "}
+              Remove From Favorites{" "}
+            </Button>
+          )}
+          <Typography className="theTextInTheHiddenCard" component="div">
+            <strong> Calories: </strong> {calories}
+          </Typography>
+
+          <Typography className="theTextInTheHiddenCard" sx={{mb: 1.5}}>
+            <strong> Country: </strong> {cuisineType}
+          </Typography>
+
+
+          <NavLink className="ingredients-link" to={`/ingredients/${label}`} state={oneRecipe}>
+            <Button className="ingredients-button"> To The Ingredients </Button>
+          </NavLink>
+          
+        </div>
+      </div>
+  );
 
   return (
-    <div className="all">
-      {/* {console.log(label)} */}
-
-      {!isInFavorite ? 
-        <button onClick={() => addToFavorites(oneRecipe)}> Add To Favorites </button> :
-         <button onClick={() => removeFromFavorites(oneRecipe)}> Remove From Favorites </button>}
-
-      <p>
-        <strong> {label} </strong>
-      </p>
-      <hr />
-      <img src={image} alt="pic" />
-      <p>
-        <strong> Calories: </strong> {calories}
-      </p>
-      <p>
-        <strong> Country: </strong> {cuisineType}
-      </p>
-      <ul>
-        <strong> ingredients </strong> {ingredients}
-      </ul>
+    <div id="card-container" variant="elevation">
+      {" "}
+      {card}{" "}
     </div>
   );
 }
