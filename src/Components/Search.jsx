@@ -2,6 +2,7 @@ import {
   Autocomplete,
   Button,
   Checkbox,
+  createTheme,
   FormControl,
   InputLabel,
   ListItemText,
@@ -9,6 +10,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import {purple} from "@mui/material/colors";
 import React, {useState} from "react";
 import "./search.css";
 
@@ -17,7 +19,7 @@ function Search({setData, loading, setLoading, setRecipe}) {
     name: "",
     type: [],
     diet: [],
-    cuisineType: []
+    cuisineType: [],
   });
 
   function submit() {
@@ -27,8 +29,6 @@ function Search({setData, loading, setLoading, setRecipe}) {
     newData.diet = temp.diet;
     newData.cuisineType = temp.cuisineType;
     setData(newData);
-
-
   }
 
   function seleteHandel(item, tempCat) {
@@ -44,17 +44,21 @@ function Search({setData, loading, setLoading, setRecipe}) {
       <form id="formDiv" onSubmit={(e) => e.preventDefault()}>
         <div id="inputDiv">
           <TextField
+            sx={{
+              boxShadow: "0 0 0 0"
+            }}
+            color="secondary"
             className="inputs"
             variant="outlined"
             label="Name"
             onChange={(e) => setTemp({...temp, name: e.target.value})}
           />
 
-          <FormControl className="inputs">
+          <FormControl color="secondary" className="inputs">
             <InputLabel id="select-CuisineType">Cuisine Type</InputLabel>
-            <Select 
+            <Select
               multiple
-              label="CuisineType"
+              label="Cuisine Type"
               value={temp.cuisineType}
               onChange={(e) => setTemp({...temp, cuisineType: e.target.value})}
               renderValue={(selected) => selected.join(", ")}
@@ -78,11 +82,11 @@ function Search({setData, loading, setLoading, setRecipe}) {
             </Select>
           </FormControl>
 
-          <FormControl className="inputs">
+          <FormControl color="secondary" className="inputs">
             <InputLabel id="select-MealType">Meal Type</InputLabel>
             <Select
               multiple
-              label="MealType"
+              label="Meal Type"
               value={temp.type}
               onChange={(e) => setTemp({...temp, type: e.target.value})}
               renderValue={(selected) => selected.join(", ")}
@@ -99,11 +103,11 @@ function Search({setData, loading, setLoading, setRecipe}) {
             </Select>
           </FormControl>
 
-          <FormControl className="inputs">
+          <FormControl color="secondary" className="inputs">
             <InputLabel id="select-Diet">Diet Type</InputLabel>
             <Select
               multiple
-              label="Diet"
+              label="Diet Type"
               value={temp.diet}
               onChange={(e) => setTemp({...temp, diet: e.target.value})}
               renderValue={(selected) => selected.join(", ")}

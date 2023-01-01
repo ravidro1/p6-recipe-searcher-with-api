@@ -3,7 +3,9 @@ import OneRecipe from "./OneRecipe";
 import "./allRecipe.css";
 import { Typography } from "@mui/material";
 
-function AllRecipe({recipe, setFavorite, InFavorite, favorite, loading}) {
+function AllRecipe({recipe, setFavorite, InFavorite, favorite, loading, setAddFavoriteClick}) {
+
+
   function removeFromFavorites(oneRecipe) {
     setFavorite((prev) => prev.filter((item, index) => oneRecipe != item));
     console.log("remove");
@@ -21,6 +23,7 @@ function AllRecipe({recipe, setFavorite, InFavorite, favorite, loading}) {
       console.log("add");
     } else {
       console.log("the item already in favorites!!!");
+      alert("This Item Is Already In Favorites!!!");
     }
   }
 
