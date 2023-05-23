@@ -1,73 +1,52 @@
-import "./App.css";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import HomePage from "./Pages/HomePage";
 import Favorites from "./Pages/Favorites";
-import {Route, Routes} from "react-router-dom";
-import DefualtPage from "./Pages/DefualtPage";
+import { Route, Routes } from "react-router-dom";
 import Ingredients from "./Pages/Ingredients";
-import {colors, ThemeProvider, createTheme} from "@mui/material";
+import DefaultPage from "./Pages/DefaultPage";
 
-const theme = createTheme({
-  palette: {
-    secondary: {
-      main: "#ffffff",
-    },
-  },
-});
-
-const LOCAL_STORAGE = "l";
+const LOCAL_STORAGE = "recipes-data";
 
 function App() {
-  const [favorite, setFavorite] = useState([]);
+  const [favoritesArray, setFavoritesArray] = useState([]);
   const [favoriteUpdate, setFavoriteUpdate] = useState(false);
 
   useEffect(() => {
     const temp = JSON.parse(localStorage.getItem(LOCAL_STORAGE));
     setFavoriteUpdate(true);
-    if (temp) setFavorite(temp);
+    if (temp) setFavoritesArray(temp);
   }, []);
 
   useEffect(() => {
     if (favoriteUpdate)
-      localStorage.setItem(LOCAL_STORAGE, JSON.stringify(favorite));
-  }, [favorite]);
+      localStorage.setItem(LOCAL_STORAGE, JSON.stringify(favoritesArray));
+  }, [favoritesArray]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className="App">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <HomePage
-                favorite={favorite}
-                setFavorite={setFavorite}
-              ></HomePage>
-            }
-          ></Route>
-          <Route
-            path="/favorites"
-            element={
-              <Favorites
-                favorite={favorite}
-                setFavorite={setFavorite}
-              ></Favorites>
-            }
-          ></Route>
-          <Route
-            path="/ingredients/:product"
-            element={<Ingredients></Ingredients>}
-          ></Route>
-          <Route path="*" element={<DefualtPage></DefualtPage>}>
-            {" "}
-          </Route>
-        </Routes>
-
-        <div className="bottom-bar">
-          <p className="copyRight"> Ⓒ Ravid Rosenzweig </p>
-        </div>
-      </div>
-    </ThemeProvider>
+    <div className="h-[100vh] w-[100vw] overflow-hidden">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePage
+              favoritesArray={favoritesArray}
+              setFavoritesArray={setFavoritesArray}
+            />
+          }
+        />
+        <Route
+          path="/favorites"
+          element={
+            <Favorites
+              favoritesArray={favoritesArray}
+              setFavoritesArray={setFavoritesArray}
+            />
+          }
+        />
+        <Route path="/ingredients/:product" element={<Ingredients />} />
+        <Route path="*" element={<DefaultPage />} />
+      </Routes>
+    </div>
   );
 }
 

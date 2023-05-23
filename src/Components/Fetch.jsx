@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 
-function Fetch({data, setRecipe, setLoading}) {
+function Fetch({ data, setRecipe, setLoading }) {
   let name = `${data.name}`;
   let type = data.type.length
     ? data.type.map((item) => `&mealType=${item}`).join("")
@@ -17,7 +17,7 @@ function Fetch({data, setRecipe, setLoading}) {
     setRecipe([]);
     console.log("load...");
     fetch(
-      `https://api.edamam.com/search?q=${name}${cuisineType}${type}${diet}&app_id=ef8d01e7&app_key=1896f9e60211d1127bf80068d7b2418d`
+      `https://api.edamam.com/search?q=${name}${cuisineType}${type}${diet}&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_KEY}`
     )
       .then((response) => response.json())
       .then((recipesData) => {

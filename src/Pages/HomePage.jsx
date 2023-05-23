@@ -1,52 +1,56 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Search from "./../Components/Search";
 import Fetch from "../Components/Fetch";
 import AllRecipe from "./../Components/AllRecipe";
-import {NavLink} from "react-router-dom";
-import {Button} from "@mui/material";
-import "./homePage.css";
-import { Spring } from "react-spring";
+import { useNavigate } from "react-router-dom";
 
-function HomePage({favorite, setFavorite}) {
+function HomePage({ favoritesArray, setFavoritesArray }) {
   const [recipe, setRecipe] = useState([]);
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
-
-
-  
-
+  const navigate = useNavigate();
   return (
-    <div className="home-page-main-div">
+    <div className="h-full w-full overflow-auto bg-[#2D033B]">
+      <div className="flex w-full flex-col justify-between sm:flex-row">
+        <button
+          onClick={() => {
+            navigate("/favorites");
+          }}
+          className="m-3 rounded-lg  bg-[#810CA8] p-3 px-5 text-white sm:w-fit"
+        >
+          Go To Favorites: Number Of Item: {favoritesArray.length}
+        </button>
 
-      <div className="header-favorite-count-recipe-count">
-        <NavLink className="show-Favorite-Count-link" to={"/favorites"}>
-          <Button className="show-Favorite-Count-button" variant="contained">
-            {" "}
-            Go To Favorites: Number Of Item: {favorite.length}{" "}
-          </Button>{" "}
-        </NavLink>
-
-        <Button variant="contained" className="showRecipeCount">
+        <button
+          disabled
+          className="m-3 rounded-lg bg-[#810CA8] p-3 text-white sm:w-fit"
+        >
           {" "}
           Number Of Item: {recipe && recipe.length}{" "}
-        </Button>
+        </button>
+
+        {/* {favorite && <h1> Number Of Item: {favorite.length} </h1>} */}
       </div>
 
-
-      <h1 className="head-line"> Home </h1>
-      <Search setData={setData} setLoading={setLoading} setRecipe={setRecipe} />
+      <h1 className="w-full text-center text-7xl text-[#E5B8F4]"> Home </h1>
+      <Search
+        data={data}
+        setData={setData}
+        setLoading={setLoading}
+        setRecipe={setRecipe}
+      />
 
       {(data.name || data.type || data.diet || data.cuisineType) && (
         <Fetch data={data} setRecipe={setRecipe} setLoading={setLoading} />
       )}
 
       <AllRecipe
-        favorite={favorite}
-        recipe={recipe}
-        setFavorite={setFavorite}
-        InFavorite={false}
         loading={loading}
+        inFavoritePage={false}
+        favoritesArray={favoritesArray}
+        recipe={recipe}
+        setFavoritesArray={setFavoritesArray}
       />
     </div>
   );

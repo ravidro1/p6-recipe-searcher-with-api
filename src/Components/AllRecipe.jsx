@@ -1,66 +1,52 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import OneRecipe from "./OneRecipe";
-import "./allRecipe.css";
-import { Typography } from "@mui/material";
+import Loading from "./Loading";
 
-function AllRecipe({recipe, setFavorite, InFavorite, favorite, loading, setAddFavoriteClick}) {
-
-
-  function removeFromFavorites(oneRecipe) {
-    setFavorite((prev) => prev.filter((item, index) => oneRecipe != item));
-    console.log("remove");
-  }
-
-  function addToFavorites(itemToAdd) {
-    let isFound = false;
-
-    favorite.map((item) => {
-      if (item.recipe.label == itemToAdd.recipe.label) return (isFound = true);
-    });
-
-    if (!isFound) {
-      setFavorite((prev) => [...prev, itemToAdd]);
-      console.log("add");
+function AllRecipe({
+  loading,
+  inFavoritePage,
+  recipe,
+  favoritesArray,
+  setFavoritesArray,
+}) {
+  function addOrRemoveFavorites(oneRecipe) {
+    if (
+      favoritesArray.some(
+        (element) => element.recipe.label == oneRecipe.recipe.label
+      )
+    ) {
+      setFavoritesArray((prev) =>
+        prev.filter((element) => oneRecipe != element)
+      );
     } else {
-      console.log("the item already in favorites!!!");
-      alert("This Item Is Already In Favorites!!!");
+      setFavoritesArray((prev) => [...prev, oneRecipe]);
     }
   }
 
-  const [isStart, setIsStart] = useState(false);
-  if(loading && !isStart) setIsStart(true);
-
   return (
-    <div>
-      <div className="main">
-        {loading && (
-            <div id="load">
-              <div>G</div>
-              <div>N</div>
-              <div>I</div>
-              <div>D</div>
-              <div>A</div>
-              <div>O</div>
-              <div>L</div>
-            </div>
-            
-        )}
+    <div className="flex w-full flex-wrap justify-center">
+      {loading ? (
+        <Loading />
+      ) : (
+        !recipe?.length &&
+        !inFavoritePage && (
+          <h1 className="my-20 text-white">Not Found Any Recipe</h1>
+        )
+      )}
 
-        {(!recipe.length && !loading && isStart)  && <Typography id="notFound"> Not Found Any Recipe </Typography>}
-        {recipe &&
-          recipe.map((item, i) => {
-            return (
-              <OneRecipe
-                key={i}
-                index={i}
-                addToFavorites={addToFavorites}
-                removeFromFavorites={removeFromFavorites}
-                InFavorite={InFavorite}
-                oneRecipe={item}
-              />
-            );
-          })}
-      </div>
+      {recipe?.map((item, i) => {
+        return (
+          <OneRecipe
+            key={i}
+            index={i}
+            addOrRemoveFavorites={addOrRemoveFavorites}
+            isRecipeInFavorite={favoritesArray.some(
+              (element) => element.recipe.label == item.recipe.label
+            )}
+            oneRecipe={item}
+          />
+        );
+      })}
     </div>
   );
 }

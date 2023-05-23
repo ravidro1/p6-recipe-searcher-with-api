@@ -1,9 +1,7 @@
-import { Button } from "@mui/material";
 import React from "react";
-import {NavLink, useLocation} from "react-router-dom";
-import "./ingredients.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function Ingredients(props) {
+function Ingredients() {
   const loc = useLocation();
 
   const ingredients = loc.state.recipe.ingredients.map((item, i) => (
@@ -11,16 +9,28 @@ function Ingredients(props) {
   ));
   const label = loc.state.recipe.label;
 
+  const navigate = useNavigate();
+
   return (
-    <div id="main-ingredients-page">
-      <div className="main-ingredients">
-        <h1 className="main-ingredients"> label {label} </h1>
-        <ul className="main-ingredients"> {loc.state && ingredients} </ul>
+    <div className="flex h-full w-full flex-col items-center justify-start  bg-[#2D033B] p-10 text-2xl text-white">
+      <div className="h-[80%] overflow-auto">
+        <h1> label {label} </h1>
+        <ul> {loc.state && ingredients} </ul>
       </div>
 
-      <NavLink to={"/"} style={{textDecoration: "none"}}>
-        <Button variant="contained"> Go Back To Home Page </Button>
-      </NavLink>
+      <button
+        onClick={() => {
+          navigate("/");
+        }}
+        className="m-3 h-[10%] w-fit rounded-lg bg-[#810CA8] p-3 px-5 text-white"
+      >
+        {" "}
+        Go Back To Home Page
+      </button>
+
+      <div className="flex h-[10%] w-[100%] items-center">
+        <p className="copyRight"> Ⓒ Ravid Rosenzweig </p>
+      </div>
     </div>
   );
 }

@@ -1,140 +1,80 @@
-import {
-  Autocomplete,
-  Button,
-  Checkbox,
-  createTheme,
-  FormControl,
-  InputLabel,
-  ListItemText,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
-import {purple} from "@mui/material/colors";
-import React, {useState} from "react";
-import "./search.css";
+import React, { useState } from "react";
+import SearchSelectButton from "./SearchSelectButton";
 
-function Search({setData, loading, setLoading, setRecipe}) {
-  const [temp, setTemp] = useState({
+function Search({ data, setData, loading, setLoading, setRecipe }) {
+  const [searchDataObj, setSearchDataObj] = useState({
     name: "",
     type: [],
     diet: [],
     cuisineType: [],
   });
 
-  function submit() {
+  function submitSearch() {
     const newData = {};
-    newData.name = temp.name;
-    newData.type = temp.type;
-    newData.diet = temp.diet;
-    newData.cuisineType = temp.cuisineType;
+    newData.name = searchDataObj.name;
+    newData.type = searchDataObj.type;
+    newData.diet = searchDataObj.diet;
+    newData.cuisineType = searchDataObj.cuisineType;
     setData(newData);
   }
 
-  function seleteHandel(item, tempCat) {
-    if (tempCat.indexOf(item) > -1) {
-      tempCat = tempCat.filter((type, index) => index != tempCat.indexOf(item));
-    } else {
-      tempCat = [...tempCat, item];
-    }
-  }
-
   return (
-    <div>
-      <form id="formDiv" onSubmit={(e) => e.preventDefault()}>
-        <div id="inputDiv">
-          <TextField
-            sx={{
-              boxShadow: "0 0 0 0"
-            }}
-            color="secondary"
-            className="inputs"
-            variant="outlined"
-            label="Name"
-            onChange={(e) => setTemp({...temp, name: e.target.value})}
+    <div className="flex justify-center">
+      <form
+        className="flex w-[80%] flex-col"
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <input
+          placeholder="Search"
+          className="h-[50px] w-[100%] rounded-md px-2"
+          onChange={(e) =>
+            setSearchDataObj({ ...searchDataObj, name: e.target.value })
+          }
+        />
+
+        <div className="flex flex-col justify-between sm:flex-row">
+          <SearchSelectButton
+            data={data}
+            searchDataObj={searchDataObj}
+            setSearchDataObj={setSearchDataObj}
+            category={"diet"}
+            arrayOfOption={["snack", "dinner", "lunch", "breakfast"]}
           />
-
-          <FormControl color="secondary" className="inputs">
-            <InputLabel id="select-CuisineType">Cuisine Type</InputLabel>
-            <Select
-              multiple
-              label="Cuisine Type"
-              value={temp.cuisineType}
-              onChange={(e) => setTemp({...temp, cuisineType: e.target.value})}
-              renderValue={(selected) => selected.join(", ")}
-            >
-              {[
-                "Indian",
-                "French",
-                "Chinese",
-                "Asian",
-                "British",
-                "Italian",
-              ].map((item) => (
-                <MenuItem key={item} value={item}>
-                  <Checkbox
-                    onClick={() => seleteHandel(item, temp.cuisineType)}
-                    checked={temp.cuisineType.indexOf(item) > -1}
-                  />
-                  <ListItemText primary={item} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl color="secondary" className="inputs">
-            <InputLabel id="select-MealType">Meal Type</InputLabel>
-            <Select
-              multiple
-              label="Meal Type"
-              value={temp.type}
-              onChange={(e) => setTemp({...temp, type: e.target.value})}
-              renderValue={(selected) => selected.join(", ")}
-            >
-              {["snack", "dinner", "lunch", "breakfast"].map((item) => (
-                <MenuItem key={item} value={item}>
-                  <Checkbox
-                    onClick={() => seleteHandel(item, temp.type)}
-                    checked={temp.type.indexOf(item) > -1}
-                  />
-                  <ListItemText primary={item} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl color="secondary" className="inputs">
-            <InputLabel id="select-Diet">Diet Type</InputLabel>
-            <Select
-              multiple
-              label="Diet Type"
-              value={temp.diet}
-              onChange={(e) => setTemp({...temp, diet: e.target.value})}
-              renderValue={(selected) => selected.join(", ")}
-            >
-              {[
-                "low-sodium",
-                "low-carb",
-                "low-fat",
-                "high-fiber",
-                "high-protein",
-                "balanced",
-              ].map((item) => (
-                <MenuItem key={item} value={item}>
-                  <Checkbox
-                    onClick={() => seleteHandel(item, temp.diet)}
-                    checked={temp.diet.indexOf(item) > -1}
-                  />
-                  <ListItemText primary={item} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <SearchSelectButton
+            data={data}
+            searchDataObj={searchDataObj}
+            setSearchDataObj={setSearchDataObj}
+            category={"cuisineType"}
+            arrayOfOption={[
+              "Indian",
+              "French",
+              "Chinese",
+              "Asian",
+              "British",
+              "Italian",
+            ]}
+          />
+          <SearchSelectButton
+            data={data}
+            searchDataObj={searchDataObj}
+            setSearchDataObj={setSearchDataObj}
+            category={"type"}
+            arrayOfOption={[
+              "low-sodium",
+              "low-carb",
+              "low-fat",
+              "high-fiber",
+              "high-protein",
+              "balanced",
+            ]}
+          />
+          <button
+            className="w-[100%] rounded-lg bg-[#810CA8] p-2 text-xl text-white sm:w-[24%] my-4"
+            onClick={submitSearch}
+          >
+            Search
+          </button>
         </div>
-        <Button onClick={submit} variant="contained">
-          {" "}
-          search{" "}
-        </Button>
       </form>
     </div>
   );
